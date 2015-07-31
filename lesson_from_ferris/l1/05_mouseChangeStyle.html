@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>鼠标移入/移出改变样式</title>
+	<style type="text/css">
+	#box
+	{
+		width: 200px;
+		height: 200px;
+		background: black;
+		color: white;
+		margin: 0 auto;
+	}
+	#box.hover
+	{
+		border: 10px solid red;
+		background: #f0f0f0;
+		color:red;
+	}
+	</style>
+	<script type="text/javascript">
+	/*
+	 * 知识点归纳：
+	 * 1、鼠标移入移出事件；
+	 * 2、通过className改变样式；
+	 */
+	window.onload = function()
+	{
+		var div = document.getElementsByTagName("div")[0];
+		div.onmouseover = function()
+		{
+			this.className = "hover";
+		}
+		div.onmouseout = function()
+		{
+			this.className = "";
+		}
+	}
+	</script>
+</head>
+<body>
+	<div id="box">鼠标移入/移出改变样式</div>
+</body>
+</html>

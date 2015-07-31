@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>输入两个数字，比较大小</title>
+	<script type="text/javascript">
+	window.onload = function()
+	{
+		var inputArr = document.getElementsByTagName("input");
+		var result = document.getElementsByTagName("span")[0];
+		var btn = inputArr[2];
+		btn.onclick = function()
+		{
+			var num1 = inputArr[0].value;
+			var num2 = inputArr[1].value;
+			if(num1 == "" || num2 == "")
+			{
+				alert("请输入数字");
+			}
+			else
+			{
+				result.innerHTML = Math.max(num1,num2);
+			}
+		}
+	}
+	</script>
+</head>
+<body>
+	<div class="box">
+		<input type="text">
+		VS
+		<input type="text">
+		<input type="button" value="两者最大的数是：">
+		<span>?</span>
+	</div>
+</body>
+</html>

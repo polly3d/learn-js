@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>页面加载后累加，自加1</title>
+	<script type="text/javascript">
+	window.onload = function()
+	{
+		var h1 = document.getElementsByTagName("h1")[0];
+		var i = 0;
+		updateNum();
+		function updateNum()
+		{
+			i++;
+			h1.innerHTML = i;
+		}
+		setInterval(updateNum,1000);
+	}
+	</script>
+</head>
+<body>
+	<h1></h1>
+</body>
+</html>

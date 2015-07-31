@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>简易网页时钟</title>
+	<style type="text/css">
+	.box
+	{
+		width: 300px;
+		background: #000;
+		text-align: center;
+		margin: 0 auto;
+		color: #fff;
+		padding: 15px 0;
+	}
+	.box span
+	{
+		line-height: 2;
+		color: #000;
+		background: #fbfbfb;
+		margin: 0 10px;
+		padding: 0 10px;
+		border: 2px solid #ccc;
+	}
+	</style>
+	<script type="text/javascript">
+	window.onload = function()
+	{
+		var spanArr = document.getElementsByTagName("span");
+		function getDate()
+		{
+			var date = new Date();
+			return [date.getHours(),date.getMinutes(),date.getSeconds()];
+		}
+
+		function updateView()
+		{
+			var nowTime = getDate();
+			for (var i = 0; i < spanArr.length; i++) {
+				spanArr[i].innerHTML = nowTime[i];
+			};
+		}
+		updateView();
+		setInterval(updateView,1000);
+	}
+	</script>
+</head>
+<body>
+	<div class="box">
+		<span>00</span>点
+		<span>00</span>分
+		<span>00</span>秒
+	</div>
+</body>
+</html>

@@ -1,0 +1,10 @@
+body
+{
+	background: darkred;
+}
+
+#nav li
+{
+	background: white;
+	border-color: black;
+}

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>数组求和</title>
+	<link rel="stylesheet" type="text/css" href="css/style.css">
+	<style type="text/css">
+	label
+	{
+		display: block;
+		margin-top:10px;
+		margin-bottom: 10px;
+	}
+	label span
+	{
+		color: #ccc;
+	}
+	</style>
+	<script type="text/javascript">
+	window.onload = function()
+	{
+		var data = document.getElementById("data");
+		var btn = document.getElementById("btn");
+		var result = document.getElementById("result");
+		btn.onclick = function()
+		{
+			var source = data.value.split(",");
+			var sum = 0;
+			for (var i = 0; i < source.length; i++) {
+				sum += parseInt(source[i]);
+			};
+			result.innerHTML = sum;
+		}
+		
+	}
+	</script>
+</head>
+<body>
+	<div id="box">
+		<label>
+			<input id="data" type="text" value="1,2,3,4,5"><span>使用,(逗号)分离数据</span>
+		</label>
+		<input id="btn" type="button" value="求和">
+		<div id="result"></div>
+	</div>
+</body>
+</html>

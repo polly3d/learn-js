@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>用parseInt解析数字，并求和</title>
+	<script type="text/javascript">
+	window.onload = function()
+	{
+		var numArr = document.getElementsByTagName("input");
+		var result = document.getElementsByTagName("span")[0];
+		var btn = numArr[2];
+		btn.onclick = function()
+		{
+			if(numArr[0].value == "" || numArr[1].value == "")
+			{
+				alert("请输入数字!");
+			}
+			else
+			{
+				var sum = parseInt(numArr[0].value) + parseInt(numArr[1].value);
+				result.innerHTML = sum;
+			}
+		}
+	}
+	</script>
+</head>
+<body>
+	<div class="box">
+		<input type="text">
+		+
+		<input type="text">
+		=
+		<span>?</span>
+		<input type="button" value="求和">
+	</div>
+</body>
+</html>

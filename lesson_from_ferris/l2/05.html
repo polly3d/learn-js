@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>改变div任意属性值</title>
+	<link rel="stylesheet" type="text/css" href="css/style.css">
+	<style type="text/css">
+	#show{width: 200px;height: 200px;background: black;margin: 0 auto;margin-top: 10px;}
+	</style>
+	<script type="text/javascript">
+	function changeStyle(element,attr,value)
+	{
+		element.style[attr] = value;
+	}
+	window.onload = function()
+	{
+		btn = document.getElementById("btn");
+		reset = document.getElementById("reset");
+		show = document.getElementById("show");
+		data = document.getElementsByTagName("input");
+		btn.onclick = function()
+		{
+			console.log(data);
+			changeStyle(show,data[0].value,data[1].value);
+		}
+		reset.onclick = function()
+		{
+			show.style.cssText = "";
+		}
+	}
+	</script>
+</head>
+<body>
+	<div id="box">
+		<label>
+			属性名：<input type="text" value="background">
+		</label>
+		<label>
+			属性值：<input type="text" value="green">
+		</label>
+		<input id="btn" type="button" value="确定"><input id="reset" type="button" value="重置">
+	</div>
+	<div id="show"></div>
+</body>
+</html>

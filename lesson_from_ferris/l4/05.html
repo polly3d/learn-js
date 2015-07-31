@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>css函数————设置/读取对象的属性</title>
+	<style type="text/css">
+	#box
+	{
+		width: 350px;
+		height: 120px;
+		margin: 0 auto;
+		border: 1px solid;
+		background: lightblue;
+	}
+	#box input
+	{
+		border: 1px solid blue;
+		background:lightyellow;
+		cursor: pointer;
+	}
+	</style>
+	<script type="text/javascript">
+	//知识点：
+	//1、主要是辨别css读取的几个属性问题；
+	//2、box.style为读写属性。这个属性只作用于元素的"style"属性中，即行内样式。
+	//3、box.currentStyle是ie特有的属性；
+	//4、getcomputedStyle方法为只读属性，能计算当前元素的所有样式的值
+	window.onload = function()
+	{
+		var box = document.getElementById("box");
+		var inputArr = document.getElementsByTagName("input");
+		inputArr[0].onclick = function()
+		{
+			//显示CSS属性
+			var str = "";
+			var style = box.currentStyle ? box.currentStyle : getComputedStyle(box);
+			for(var key in style)
+			{
+				str += key + ":" + style[key] + "\n";
+			} 
+			alert(str);
+		}
+		inputArr[1].onclick = function()
+		{
+			//设置属性
+			setCss(box,{background:"lightgreen",width:"100px"});
+		}
+		inputArr[2].onclick = function()
+		{
+			//恢复默认
+			setCss(box,{background:"lightBlue",width:"350px"})
+		}
+	}
+
+	function setCss(obj,style)
+	{
+		for(var key in style)
+		{
+			obj.style[key] = style[key];
+		}
+	}
+	</script>
+</head>
+<body>
+	<div id="box">
+		<input type="button" value="get style">
+		<input type="button" value="set style">
+		<input type="button" value="set default">
+	</div>
+</body>
+</html>

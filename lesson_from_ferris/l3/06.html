@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>判断数字是否为两位数</title>
+	<script type="text/javascript">
+	window.onload = function()
+	{
+		var inputArr = document.getElementsByTagName("input");
+		inputArr[1].onclick = function()
+		{
+			if(inputArr[0].value == "")
+			{
+				alert("请输入数字");
+			}
+			else
+			{
+				if(inputArr[0].value.length >= 2)
+				{
+					alert(inputArr[0].value.length + "位数字");
+				}
+				else
+				{
+					alert("这不是两位数");
+				}
+			}
+		}
+	}
+	</script>
+</head>
+<body>
+	<input type="text">
+	<input type="button" value="是否为两位数">
+</body>
+</html>

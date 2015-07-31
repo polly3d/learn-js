@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>网页换肤</title>
+	<link rel="stylesheet" href="css/green.css">
+	<style type="text/css">
+	ul,li
+	{
+		list-style: none;
+	}
+	#box
+	{
+		width: 500px;
+		margin: 0 auto;
+	}
+	#skin,#nav
+	{
+		overflow: hidden;
+	}
+	#skin li
+	{
+		float: left;
+		width: 10px;
+		height: 10px;
+		margin-right: 10px;
+		border: 5px solid black;
+		cursor: pointer;
+	}
+	#red
+	{
+		background: red;
+	}
+	#green
+	{
+		background: green;
+	}
+	#nav li
+	{
+		float: left;
+		width: 82px;
+		line-height: 25px;
+		text-align: center;
+		border-right: 1px solid #fff;
+	}
+	</style>
+	<script type="text/javascript">
+	/*
+	 * 知识点归纳：
+	 * 1、通过document.getElementsByTagName获得link引用；
+	 * 2、根据点击，把link.href修改成相应的内容；
+	 */
+	window.onload = function()
+	{
+		var skinUL = document.getElementById("skin");
+		var link = document.getElementsByTagName("link")[0];
+		for (var i = 0; i < skinUL.childNodes.length; i++) {
+			skinUL.childNodes[i].onclick = function()
+			{
+				link.href = "css/" + this.id + ".css";
+			};
+		};
+	}
+	</script>
+</head>
+<body>
+	<div id="box">
+		<ul id="skin">
+			<li id="red"></li>
+			<li id="green"></li>
+		</ul>
+		<ul id="nav">
+			<li><a href="#">新闻</a></li>
+			<li><a href="#">娱乐</a></li>
+			<li><a href="#">体育</a></li>
+			<li><a href="#">电影</a></li>
+		</ul>
+	</div>
+</body>
+</html>

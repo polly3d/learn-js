@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>网页计算器</title>
+	<style type="text/css">
+	body,div,p,ul,li,input{margin: 0;padding: 0}
+	ul{list-style: none;}
+	a{color:#fff;outline: none;text-decoration: none;}
+	body{font: 700 24px/1.5 Arial;}
+	#box{position: relative;width: 300px;background: #000;margin: 10px auto;}
+	.f-text{border:0;width: 290px;height: 84px;text-align: right;font:700 50px/84px Arial;background: url(http://js.fgm.cc/learn/lesson3/img/inputBg.jpg); repeat-x;padding: 0 5px;}
+	ul{position: relative;overflow: hidden;zoom: 1;background: url(http://js.fgm.cc/learn/lesson3/img/bg.jpg);padding: 0 0 17px 8px;}
+	ul li{float: left;width: 63px;height: 41px;margin: 17px 10px 0 0;}
+	ul li a{display: block;width: 64px;height: 41px;line-height: 41px;text-align: center;background: url(http://js.fgm.cc/learn/lesson3/img/btn.png) no-repeat;}
+	ul li a:hover{background-position: -63px 0;}
+	ul li.btn-1 a{background-position: 0 -41px;}
+	ul li.btn-1 a:hover{background-position:-63px -41px;}
+	ul li.bnt-2{position: absolute;top: 174px;right: 0;height: 99px;}
+	ul li.btn-2 a{height: 99px;line-height: 99px;background-position: 0 -164px;}
+	ul li.btn-2 a:hover{background-position: -63px -164px;}
+	ul li.btn-3{width: 136px;}
+	ul li.btn-3 a{width: 136px;background-position: 0 -82px;}
+	ul li.btn-3 a:hover{background-position: 0 -123px;}
+	#formula{position: absolute;top: 0px;background: none;border: 0;font:700 12px/1.5 Arial;width: 280px;padding: 3px 15px 0 5px;text-align: right;}
+	</style>
+	<script type="text/javascript">
+	window.onload = function()
+	{
+		var ul = document.getElementsByTagName("ul")[0];
+		var inputArr = document.getElementsByTagName("input");
+		var numArr = new Array();
+		var isComplete = false;
+		ul.onclick = function()
+		{
+			var target = event.target;
+			if(target.tagName.toLowerCase() == "a")
+			{
+				switch(target.innerHTML)
+				{
+					case "c":
+						clearNum();
+						break;
+					case "%":
+						do_cal("%");
+						break;
+					case "/":
+						do_cal("/");
+						break;
+					case "x":
+						do_cal("*");
+						break;
+					case "-":
+						do_cal("-");
+						break;
+					case "+":
+						do_cal("+");
+						break;
+					case "=":
+						do_cal("=");
+						break;
+					default:
+						showCurrentNum(target.innerHTML);
+						break;
+				}
+			}
+		}
+
+		function do_cal(operator)
+		{
+			if(isComplete)
+			{
+				numArr = new Array();
+				isComplete = false;
+			}
+			var currentNum = inputArr[0].value;
+			numArr.unshift(currentNum);
+			if(operator != "=")
+			{
+				numArr.unshift(operator);
+				showFormula();
+				inputArr[0].value = "";
+			}
+			else
+			{
+				showFormula();
+				inputArr[0].value = eval(inputArr[1].value);
+				isComplete = true;
+			}
+		}
+
+		function showFormula()
+		{
+			var str = "";
+			for (var i = numArr.length - 1; i >= 0; i--) {
+				str += numArr[i]
+			};
+			inputArr[1].value = str;
+		}
+
+		function showCurrentNum(numText)
+		{
+			if(isComplete)
+			{
+				clearNum();
+			}
+			if(inputArr[0].value == "0" && numText != ".")
+			{
+				inputArr[0].value = "";
+			}
+			inputArr[0].value += numText;
+		}
+
+		function clearNum()
+		{
+			isComplete = false;
+			numArr = new Array();
+			inputArr[0].value = 0;
+			inputArr[1].value = "";
+		}
+
+	}
+	</script>
+</head>
+<body>
+	<div id="box">
+		<input type="text" class="f-text" readonly="readonly" maxlength="9" value="0">
+		<ul>
+			<li class="btn-1"><a href="#">c</a></li>
+			<li class="btn-1"><a href="#">%</a></li>
+			<li class="btn-1"><a href="#">/</a></li>
+			<li class="btn-1"><a href="#">x</a></li>
+			<li><a href="#">7</a></li>
+			<li><a href="#">8</a></li>
+			<li><a href="#">9</a></li>
+			<li class="btn-1"><a href="#">-</a></li>
+			<li><a href="#">4</a></li>
+			<li><a href="#">5</a></li>
+			<li><a href="#">6</a></li>
+			<li class="btn-1"><a href="#">+</a></li>
+			<li><a href="#">1</a></li>
+			<li><a href="#">2</a></li>
+			<li><a href="#">3</a></li>
+			<li class="btn-2"><a href="#">=</a></li>
+			<li class="btn-3"><a href="#">0</a></li>
+			<li><a href="#">.</a></li>
+		</ul>
+		<input type="text" id="formula" readonly="readonly">
+	</div>
+</body>
+</html>

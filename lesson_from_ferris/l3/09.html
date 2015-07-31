@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>倒计时钟（100秒）</title>
+	<style type="text/css">
+	.box
+	{
+		width: 300px;
+		margin: 0 auto;
+		background: #000;
+		padding: 15px 0;
+		color: #fff;
+		text-align: center;
+	}
+	.box span
+	{
+		line-height: 2;
+		margin: 0 10px;
+		padding: 0 10px;
+		border: 2px solid #ccc;
+		background: #fff;
+		color: #000;
+	}
+	.box input
+	{
+		border: 0;
+		width: 283px;
+		height: 50px;
+		background: url(http://js.fgm.cc/learn/lesson3/img/btn-1.png) no-repeat;
+		cursor: pointer;
+	}
+	input.cancle
+	{
+		background-position: 0 -50px;
+	}
+	</style>
+	<script type="text/javascript">
+	window.onload = function()
+	{
+		var btn = document.getElementsByTagName("input")[0];
+		var spanArr = document.getElementsByTagName("span");
+		var num = 100;
+		var isStart = false;
+		btn.onclick = function()
+		{
+			this.className = this.className == "" ? "cancle" : "";
+			isStart = this.className == "" ? false : true;
+			countDown();
+		}
+
+		function countDown()
+		{
+			if(!isStart)
+			{
+				return;
+			}
+			if(num <= 0)
+			{
+				isStart = false;
+			}
+			
+			setTimeout(countDown,1000);
+			var min = parseInt(num / 60);
+			var second = num % 60;
+			spanArr[0].innerHTML = min;
+			spanArr[1].innerHTML = second;
+			num--;	
+		}
+	}
+	</script>
+</head>
+<body>
+	<div class="box">
+		<span>1</span>分钟
+		<span>40</span>秒
+		<input type="button">
+	</div>
+</body>
+</html>

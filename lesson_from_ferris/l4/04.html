@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>arguments应用————求出函数参数的总和</title>
+	<style type="text/css">
+	pre{color: green;padding: 10px 15px;background:#f0f0f0;border: 1px dotted #333;font:12px/1.5 Courier New;}
+	
+	</style>
+</head>
+<body>
+<pre>
+&lt;script type="text/javascript"&gt;
+	function sum()
+	{
+		var len = arguments.length;
+		var result = 0;
+		for (var i = 0; i < len; i++) {
+			result += arguments[i];
+		}
+		return result;
+	}
+	alert(sum(1,2,3,4,5));
+&lt;/script&gt;
+</pre>
+	<script type="text/javascript">
+	function sum()
+	{
+		var len = arguments.length;
+		var result = 0;
+		for (var i = 0; i < len; i++) {
+			result += arguments[i];
+		}
+		return result;
+	}
+	alert(sum(1,2,3,4,5));
+	</script>
+</body>
+</html>

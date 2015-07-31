@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>改变div属性</title>
+	<style type="text/css">
+	.box
+	{
+		width: 300px;
+		margin: 0 auto;
+		text-align: center;
+	}
+	#rect
+	{
+		width: 100px;
+		height: 100px;
+		background-color: #000;
+		margin: 10px auto;
+	}
+	</style>
+	<script type="text/javascript">
+	/*
+	 * 知识点归纳：
+	 * 1、通过element.style可访问/修改css属性；
+	 * 2、element.style.cssText可访问css的文本字符；
+	 * 3、要操作dom元素，必须在window.onload下操作，即要元素全部加载完成之后才能够操作；
+	 */
+	var attrArr = ["width","height","backgroundColor","display","display"];
+	var valueArr = ["200px","200px","red","none","block"];
+	function changeStyle(element,attr,value)
+	{
+		element.style[attr] = value;
+	}
+	window.onload = function()
+	{
+		var btnArr = document.getElementsByTagName("input");
+		var rectBox = document.getElementById("rect");
+		for (var i = 0; i < btnArr.length; i++) {
+			var btn = btnArr[i];
+			btn.index = i;
+			btn.onclick = function()
+			{
+				if(this.index == btnArr.length -1)
+				{
+					rectBox.style.cssText = "";
+				}
+				changeStyle(rectBox,attrArr[this.index],valueArr[this.index]);
+			};
+		};
+	}
+	</script>
+</head>
+<body>
+	<div class="box">
+		<input type="button" value="变宽">
+		<input type="button" value="变高">
+		<input type="button" value="变色">
+		<input type="button" value="隐藏">
+		<input type="button" value="重置">
+	</div>
+	<div class="box">
+		<div id="rect"></div>
+	</div>
+</body>
+</html>

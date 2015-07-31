@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>密码的提示框</title>
+	<style type="text/css">
+	body{text-align: center;}
+	#box{padding:5px;margin-top:5px;background:#ffefa4;border:1px solid #f90;display:none;}
+	</style>
+	<script type="text/javascript">
+	/*
+	 * 知识点归纳：
+	 * 1、鼠标移入移出事件；
+	 * 2、改变元素样式，显示或隐藏；
+	 */
+	window.onload = function()
+	{
+		var label = document.getElementsByTagName("label")[0];
+		var tip = document.getElementById("box");
+		label.onmouseover = function()
+		{
+			console.log("over");
+			tip.style.display = "block";
+		};
+		label.onmouseout = function()
+		{
+			tip.style.display = "none";
+		}
+	}
+	</script>
+</head>
+<body>
+	<label><input type="checkbox">记住密码</label>
+	<div id="box">
+		为了您的信息安全，请不要在网吧或公用电脑上使用此功能！
+	</div>
+</body>
+</html>
