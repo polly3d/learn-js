@@ -2,9 +2,15 @@
 <html lang="en">
 <head>
 	<meta charset="UTF-8">
-	<title>模拟select控件</title>
+	<title>阻止右键菜单（阻止默认事件）</title>
+	<script type="text/javascript">
+	document.oncontextmenu = function()
+	{
+		return false;
+	}
+	</script>
 </head>
 <body>
-	
+	侦听document.oncontextmenu事件，让其返回false。即可阻止右键菜单
 </body>
 </html>
