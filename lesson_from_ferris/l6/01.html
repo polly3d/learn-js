@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style type="text/css">
+	*{margin:0;padding:0;}
+	body{font:12px/2 Arial;color:#fff;}
+	p{padding: 0 10px;margin-top: 10px;}
+	span{color: #ff0;padding-left: 5px;}
+	#box{position: absolute;width: 300px;height: 150px;background: #333;border: 2px solid #ccc;top: 50%;left: 50%;margin: -75px 0 0 -150px;}
+	#box h2{height: 25px;cursor: move;background: #222;border-bottom: 2px solid #ccc;text-align: right;padding: 0 10px;line-height: 25px;}
+	#box h2 a{color:#fff;font: 12px/25px Arial;text-decoration: none;outline: none;}
+	</style>
+	<script type="text/javascript">
+	window.onload = function()
+	{
+		var box = document.getElementById("box");
+		var h2 = document.getElementsByTagName("h2")[0];
+		var pDrag = document.getElementsByTagName("span")[0];
+		var pOffsetTop = document.getElementsByTagName("span")[1];
+		var pOffsetLeft = document.getElementsByTagName("span")[2];
+
+		var isDrag = false;
+		var disX = disY = 0;
+
+		//鼠标按下，激活拖
+		h2.onmousedown = function()
+		{
+			var event = event || window.event;
+
+			isDrag = true;
+
+			disX = event.clientX - box.offsetLeft;
+			disY = event.clientY - box.offsetTop;
+
+			this.setCapture && this.setCapture();
+		}
+
+		//拖动中
+		document.onmousemove = function()
+		{
+			if(!isDrag) return;
+			var event = event || window.event;
+
+			var iL = event.clientX - disX;
+			var iT = event.clientY - disY;
+
+			var maxL = document.documentElement.clientWidth - box.offsetWidth;
+			var maxT = document.documentElement.clientHeight - box.offsetHeight;
+
+			iL = iL < 0 ? 0 : iL;
+			iL = maxL < iL ? maxL : iL;
+			iT = iT < 0 ? 0 : iT;
+			iT = maxT < iT ? maxT : iT;
+
+			box.style.marginTop = box.style.marginLeft = 0;
+			box.style.left = iL + "px";
+			box.style.top = iT + "px";
+			setStatus();
+			return false;
+		}
+
+		//拖动结束
+		document.onmouseup = function()
+		{
+			isDrag = false;
+			h2.releaseCapture && h2.releaseCapture();
+			setStatus();
+		}
+
+		setStatus();
+
+		function setStatus()
+		{
+			pDrag.innerHTML = isDrag;
+			pOffsetTop.innerHTML = box.offsetTop;
+			pOffsetLeft.innerHTML = box.offsetLeft;
+		}
+
+		//todo以后再增加回放功能
+	}
+	</script>
+</head>
+<body>
+	<div id="box">
+		<h2><a href="javascript:;">点击回放拖动轨迹</a></h2>
+		<p><strong>Drag:</strong><span></span></p>
+		<p><strong>offsetTop:</strong><span></span></p>
+		<p><strong>offsetLeft:</strong><span></span></p>
+	</div>
+</body>
+</html>

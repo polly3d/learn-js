@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>仿腾讯微博效果</title>
+	<style type="text/css">
+	body,div,h2,h3,ul,li,p{margin: 0;padding: 0}
+	a{text-decoration: none;}
+	a:hover{text-decoration: underline;}
+	ul{list-style: none;}
+	body{color:#333;background: #3c3a3b;font:12px/1.5 宋体;}
+	#msgBox{width: 500px;background:#fff;border-radius: 5px;margin: 10px auto;padding-top: 10px;}
+	#msgBox form h2{font-weight: 400;font:400 18px/1.5 微软雅黑;}
+	#msgBox form{background:url(http://js.fgm.cc/learn/lesson6/img/boxBG.jpg) repeat-x 0 bottom;margin: 0 20px 15px;}
+	#msgBox form div{position: relative;color: #999;margin-top: 10px;}
+	#msgBox img{border-radius: 3px;}
+	#userName,#conBox{color: #777;border: 1px solid #d0d0d0;border-radius: 6px;background: #fff url(http://js.fgm.cc/learn/lesson6/img/inputBG.png) repeat-x;padding: 3px 5px;font:14px/1.5 Arial;}
+	#userName.active,#conBox.active{border:1px solid #7abb2c;}
+	#userName{height: 20px;}
+	#conBox{width: 448px;resize: none;height: 65px;overflow: auto;}
+	#face{position: absolute;top:0;left: 172px;}
+	#face img{width: 30px;height: 30px;cursor: pointer;margin-right: 6px;opacity: 0.5;filter:alpha(opacity=50);}
+	#face img.hover,#face img.current{width:28px;height: 28px;border: 1px solid #f60;opacity: 1;filter:alpha(opacity=100);}
+	#sendBtn{border:0;width: 112px;height: 30px;cursor: pointer;margin-left: 10px;background: url(http://js.fgm.cc/learn/lesson6/img/btn.png) no-repeat;}
+	#sendBtn.hover{background-position: 0 -30px;}
+	.maxNum{font: 26px/30px Georgia;padding: 0 5px;}
+
+	.tr{overflow: hidden;zoom: 1;}
+	.tr p{float: right;line-height: 30px;}
+	.tr * {float: left;}
+
+	#msgBox .list{padding: 10px;}
+	#msgBox .list h3{position: relative;height: 33px;font-size: 14px;font-weight: 400;background:#e3eaec;border: 1px solid #dee4e7;}
+	#msgBox .list h3 span{position: absolute;background:#fff;left: 6px;top: 6px;line-height: 28px;display: inline-block;padding: 0 15px;}
+	#msgBox .list ul{overflow: hidden;}
+	#msgBox .list ul li{float: left;clear:both;width: 100%;border-bottom: 1px dashed #d8d8d8;padding: 10px 0;background: #fff;overflow: hidden;}
+	#msgBox .list ul li:hover{background: #f5f5f5;}
+	#msgBox .list .userPic{float: left;width: 50px;height: 50px;display: inline;margin-left: 10px;border:1px solid #ccc;border-radius: 3px;}
+	#msgBox .list .content{float: left;width: 400px;font-size: 14px;margin-left: 10px;font-family: arial;word-wrap: break-word;}
+	#msgBox .list .userName{display: inline;padding-right: 5px;}
+	#msgBox .list .userName a{color: #2b4a78;}
+	#msgBox .list .msgInfo{display: inline;word-wrap: break-word;}
+	#msgBox .list .times{color: #889db6;font: 12px/18px arial;margin-top: 5px;overflow: hidden;zoom:1;}
+	#msgBox .list .times span{float: left;}
+	#msgBox .list .times a{float: right;color: #889db6;display: none;}
+	</style>
+	<script type="text/javascript">
+	//获取id,class,tagName
+	var get = {
+		byId:function(id)
+		{
+			return document.getElementById(id);
+		},
+		byClass: function(oName,oParent)
+		{
+			var dataArr = [];
+			var elementArr = this.byTagName("*",oParent);
+			var reg = new RegExp("\\b" + oName + "\\b");
+			for (var i = 0; i < elementArr.length; i++) {
+				if(reg.test(elementArr[i].className))
+				{
+					dataArr.push(elementArr[i]);
+				}
+			};
+			return dataArr;
+		},
+		byTagName: function(element,obj)
+		{
+			return (obj || document).getElementsByTagName(element);
+		}
+	};
+	//事件绑定，删除
+	var EventUtil = {
+		addHandler:function(oElement,sEvent,fnHandler)
+		{
+			oElement.addEventListener ? oElement.addEventListener(sEvent,fnHandler,false) : oElement.attachEvent("on" + sEvent,fnHandler);
+		},
+		removeEventHandler:function(oElement,sEvent,fnHandler)
+		{
+			oElement.removeEventListener ? oElement.removeEventListener(sEvent,fnHandler,false) : oElement.attachEvent("on" + sEvent,fnHandler);
+		},
+		addLoadHandler:function(fnHandler)
+		{
+			this.addHandler(window,"load",fnHandler);
+		}
+	};
+	//设置css样式
+	//读取css样式
+	function css(obj,attr,value)
+	{
+		switch(arguments.length)
+		{
+			case 2:
+				if(typeof arguments[1] == "object")
+				{
+					for(var i in attr)
+						i == "opacity" ? (obj.style["filter"] = "alpha(opacity=" + attr[i] + ")" , obj.style[i] = attr[i]/100) : obj.style[i] = attr[i];
+				}
+				else
+				{
+					return obj.currentStyle ? obj.currentStyle[attr] : getComputedStyle(obj,null)[attr];
+				}
+				break;
+			case 3:
+				attr == "opacity" ? (obj.style["filter"] = "alpha(opacity=" + value + ")" , obj.style[attr] = value/100) : obj.style[i] = attr[i];
+				break;
+		}
+	};
+	EventUtil.addLoadHandler(function()
+	{
+		var msgBox = get.byId('msgBox');
+		var userName = get.byId('userName');
+		var conBox = get.byId('conBox');
+		var sendBtn = get.byId('sendBtn');
+		var maxNum = get.byClass("maxNum")[0];
+		var countTxt = get.byClass("countTxt")[0];
+		var list = get.byClass("list")[0];
+		var ul = get.byTagName('ul',list)[0];
+		var li = get.byTagName('li',list);
+		var ftxt = get.byClass('f-text',msgBox);
+		var img = get.byTagName('img',get.byId('face'));
+		var hasSend = false;
+		var timer = null;
+		var temp = "";
+		var i = 0;
+		var maxNumCount = 140;
+
+		EventUtil.addHandler(get.byTagName("form",msgBox)[0],"submit",function(){return false;});
+
+		EventUtil.addHandler(sendBtn,"click",sendMsg);
+
+		EventUtil.addHandler(document,"keyup",function(event)
+		{
+			var event = event || window.event;
+			event.ctrlKey && event.keyCode == 13 && sendMsg();
+		});
+
+		function sendMsg()
+		{
+			var reg = /^\s*$/g;
+			if(reg.test(userName.value))
+			{
+				alert("请输入用户名");
+				userName.focus();
+			}
+			else if(!/^[u4e00-\u9fa5\w]{2,8}$/g.test(userName.value))
+			{
+				alert("用户名由2-8位字母、数字、下划线、汉字组成！");
+				userName.focus();
+			}
+			else if(reg.test(conBox.value))
+			{
+				alert("随便说点什么吧！");
+				conBox.focus();
+			}
+			else if(!hasSend)
+			{
+				alert("你输入的内容已超出限制，请检查！");
+				conBox.focus();
+			}
+			else
+			{
+				//微博发送后的显示
+				var oLi = document.createElement("li");
+				var oDate = new Date();
+				oLi.innerHTML = "<div class=\"userPic\"><img src=\"" + get.byClass("current", get.byId("face"))[0].src + "\"></div>\
+							 	<div class=\"content\">\
+							 		<div class=\"userName\"><a href=\"javascript:;\">" + userName.value + "</a>:</div>\
+									<div class=\"msgInfo\">" + conBox.value.replace(/<[^>]*>|&nbsp;/ig, "") + "</div>\
+									<div class=\"times\"><span>" + format(oDate.getMonth() + 1) + "\u6708" + format(oDate.getDate()) + "\u65e5 " + format(oDate.getHours()) + ":" + format(oDate.getMinutes()) + "</span><a class=\"del\" href=\"javascript:;\">\u5220\u9664</a></div>\
+							 	</div>";
+				li.length ? ul.insertBefore(oLi,li[0]) : ul.appendChild(oLi);
+
+				get.byTagName("form",msgBox)[0].reset();
+				for (var i = 0; i < img.length; i++) {
+					img[i].className = "";
+				};
+				img[0].className = "current";
+
+				//动态效果
+				var iHeight = oLi.clientHeight - parseFloat(css(oLi,"paddingTop")) - parseFloat(css(oLi,"paddingBottom"));
+				var alpha = count = 0;
+				css(oLi,{"opacity":"0","height":"0"});
+				timer = setInterval(function()
+				{
+					css(oLi,{"display":"block","opacity":"0","height":(count += 8) + "px"});
+					if(count > iHeight)
+					{
+						clearInterval(timer);
+						css(oLi,"height",iHeight + "px");
+						timer = setInterval(function()
+						{
+							css(oLi,"opacity",(alpha += 10));
+							alpha > 100 && (clearInterval(timer),css(oLi,"opacity",100));
+						},30);
+					}
+				},30);
+
+			}
+		}
+
+		EventUtil.addHandler(conBox,"keyup",confine);
+		EventUtil.addHandler(conBox,"focus",confine);
+		EventUtil.addHandler(conBox,"change",confine);
+
+		function confine()
+		{
+			var textLen = 0;
+			for(i = 0; i< conBox.value.length;i++)
+				textLen += /[^\x00-\xff]/g.test(conBox.value.charAt(i)) ? 1 : 0.5;
+			maxNum.innerHTML = Math.abs(maxNumCount - Math.floor(textLen));
+			maxNumCount - Math.floor(textLen) >= 0 ? (css(maxNum,"color",""),countTxt.innerHTML = "还能输入",hasSend = true) : (css(maxNum,"color","#f60"),countTxt.innerHTML = "已超出",hasSend = false);
+		}
+		confine();
+
+		EventUtil.addHandler(sendBtn,"mouseover",function(){this.className = "hover"});
+		EventUtil.addHandler(sendBtn,"mouseout",function(){this.className = ""});
+
+		function liHover()
+		{
+			for (var i = 0; i < li.length; i++) {
+				EventUtil.addHandler(li[i],"mouseover",function(){
+					this.className = "hover";
+					temp = get.byClass("times",this)[0];
+					var thisA = get.byTagName("a",temp);
+					if(!thisA.length)
+					{
+						var oA = document.createElement("a");
+						oA.innerHTML = "删除";
+						oA.className = "del";
+						oA.href = "javascript:;";
+						temp.appendChild(oA);
+					}
+					else
+					{
+						thisA[0].style.display = "block";
+					}
+				});
+				EventUtil.addHandler(li[i],"mouseout",function()
+				{
+					this.className = "";
+					var oA = get.byTagName("a",get.byClass("times",this)[0])[0];
+					oA.style.display = "none";
+				});
+			}
+		}
+		liHover();
+
+		function format(str)
+		{
+			return str.toString().replace(/^(\d)$/,"0$1");
+		}
+
+		for (var i = 0; i < img.length; i++) {
+			EventUtil.addHandler(img[i],"mouseover",function(){this.className += "hover";});
+			EventUtil.addHandler(img[i],"mouseout",function(){this.className = this.className.replace(/\s?hover/,"");});
+			EventUtil.addHandler(img[i],"click",function(){
+				for (var i = 0; i < img.length; i++) {
+					img[i].className = "";
+				};
+				this.className = "current";
+			});
+		};
+	});
+	</script>
+</head>
+<body>
+	<div id="msgBox">
+		<form>
+			<h2>来 ，说说你在做什么，想什么</h2>
+			<div>
+				<input id="userName" class="f-text">
+				<p id="face">
+					<img class="current" src="http://js.fgm.cc/learn/lesson6/img/face1.gif" alt=""><img src="http://js.fgm.cc/learn/lesson6/img/face2.gif" alt=""><img src="http://js.fgm.cc/learn/lesson6/img/face3.gif" alt=""><img src="http://js.fgm.cc/learn/lesson6/img/face4.gif" alt=""><img src="http://js.fgm.cc/learn/lesson6/img/face5.gif" alt=""><img src="http://js.fgm.cc/learn/lesson6/img/face6.gif" alt=""><img src="http://js.fgm.cc/learn/lesson6/img/face7.gif" alt=""><img src="http://js.fgm.cc/learn/lesson6/img/face8.gif" alt="">
+				</p>
+			</div>
+			<div>
+				<textarea id="conBox" class="f-text"></textarea>
+			</div>
+			<div class="tr">
+				<p>
+					<span class="countTxt">还能输入</span><strong class="maxNum">140</strong><span>个字</span>
+					<input type="button" id="sendBtn" value="" title="快捷键 Ctrl+Enter">
+				</p>
+			</div>
+		</form>
+		<div class="list">
+			<h3><span>大家在说</span></h3>
+			<ul>
+				<li>
+					<div class="userPic"><img src="http://js.fgm.cc/learn/lesson6/img/face.gif" alt=""></div>
+					<div class="content">
+						<div class="userName"><a href="javascript:;">爱老虎油</a>:</div>
+						<div class="msgInfo">仿腾讯微博效果，欢迎大家测试！</div>
+						<div class="times"><span>08月10日 12:01</span><a href="javascript:;" class="del">删除</a></div>
+					</div>
+				</li>
+			</ul>
+		</div>
+	</div>
+</body>
+</html>
