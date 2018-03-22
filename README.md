@@ -2,11 +2,11 @@
 
 ## HTML/CSS基础
 
-- [ ] 命名也是很重要的
+- [*] 命名也是很重要的
 - [ ] css常用的布局(BFC概念、flex)
 - [ ] css单位有哪些
 - [ ] css自定义字体（icon)
-- [ ] 什么是sass
+- [*] 什么是sass
 - [ ] 阅读bootstrap源码（包括css组件化方案）
 - [ ] 关于响应式布局
 
@@ -33,3 +33,4 @@
 参考资料：
 
 * https://javascript.ruanyifeng.com/
+* https://coursetro.com/courses/23/Vue-Tutorial-in-2018---Learn-Vue.js-by-Example
